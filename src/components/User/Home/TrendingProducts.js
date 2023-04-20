@@ -35,35 +35,35 @@ const TrendingProducts = ({ trending }) => {
             <div className="product-slider arrow-left-right">
 
               {trending && trending.length > 0 && (
- <OwlCarousel margin={10} {...options} >
- {
-    trending.map((trend) => (
-     <Fragment key={trend.id}>
-       <div className="single-product">
-         <div className="product-img">
-           <span className="pro-label sale-label">sale</span>
-           <NavLink to={`/products-details/${trend.id}`}>
-             <img src={trend.ProductImages[0].path} alt={trend.ProductFlat.name} />
-           </NavLink>
-         </div>
+                <OwlCarousel margin={10} {...options} >
+                  {
+                    trending.map((trend) => (
+                      <Fragment key={trend.id}>
+                        <div className="single-product">
+                          <div className="product-img">
+                            <span className="pro-label sale-label">sale</span>
+                            <NavLink to={`/products-details/${trend.id}`}>
+                              <img src={trend.ProductImages[0].path} alt={trend.ProductFlat.name} />
+                            </NavLink>
+                          </div>
 
-         <div className="product-info clearfix text-center">
-           <div className="fix">
-             <h4 className="post-title">{trend.ProductFlat.name}</h4>
-             <div className="product-price">
-               <span className="price-1">${trend.ProductFlat.price}</span>
-             </div>
-           </div>
-         </div>
-       </div>
-     </Fragment>
+                          <div className="product-info clearfix text-center">
+                            <div className="fix">
+                              <h4 className="post-title">{trend.ProductFlat.name}</h4>
+                              <div className="product-price">
+                                <span className="price-1">${trend.ProductFlat.price}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </Fragment>
 
-   ))
- }
+                    ))
+                  }
 
-</OwlCarousel>
+                </OwlCarousel>
               )}
-             
+
             </div>
           </div>
         </div>

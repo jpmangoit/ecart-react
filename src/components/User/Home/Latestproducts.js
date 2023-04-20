@@ -29,7 +29,7 @@ const Latestproducts = ({ latest }) => {
   const dispatch = useDispatch();
 
   // const { latest, error } = useSelector((state) => state.latest);
-  // console.log(latest, "latest");
+ // console.log(latest, "latest");
 
   const handleButtonClick = (param) => {
     if (param === "newArrival") {
@@ -91,7 +91,7 @@ const Latestproducts = ({ latest }) => {
                       <>
                         <OwlCarousel margin={10} {...options}>
                           {latest.map((latestproduct) => (
-                            <>
+                            < Fragment key={latestproduct.id}>
                               <div key={latestproduct.id}>
                                 <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12 latestproduct">
                                   <div className="single-product">
@@ -125,7 +125,7 @@ const Latestproducts = ({ latest }) => {
                                   </div>
                                 </div>
                               </div>
-                            </>
+                            </Fragment>
                           ))}
                         </OwlCarousel>
                       </>

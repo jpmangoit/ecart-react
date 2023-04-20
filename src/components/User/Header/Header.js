@@ -1,39 +1,38 @@
-import React, { Fragment,useEffect } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { NavLink, Link } from 'react-router-dom'
 import NavBar from './NavBar'
 import { useDispatch, useSelector } from 'react-redux';
-import { logoutUser } from '../../../action/AuthAction';
 import { useNavigate } from 'react-router-dom';
 import { LOGOUT_USER_SUCCESS } from '../../../constant/AuthConstant';
+import { Dropdown } from 'react-bootstrap';
 
 const Header = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate()
   const { error, loading, isAuthenticated, userLogin } = useSelector((state) => state.userLogin);
-  console.log(isAuthenticated,"ath");
- if(isAuthenticated === true){
-  console.log("login");
- }else{
-  console.log("logout");
- }
+  // console.log(isAuthenticated,"ath");
+  //  if(isAuthenticated === true){
+  //   console.log("login");
+  //  }else{
+  //   console.log("logout");
+  //  }
 
- const handelLogOut = () => {
-  localStorage.removeItem('userDetails')
-  dispatch({
-      type: LOGOUT_USER_SUCCESS,    
-  })
-  
-
- }
- useEffect(() => {
-
-  if (isAuthenticated === false) {
-    navigate('/login')
+  const handelLogOut = () => {
+    localStorage.removeItem('userDetails')
+    dispatch({
+      type: LOGOUT_USER_SUCCESS,
+    })
   }
 
-}, [dispatch, isAuthenticated])
- 
+  useEffect(() => {
+
+    if (isAuthenticated === false) {
+      navigate('/login')
+    }
+
+  }, [dispatch, isAuthenticated])
+
   return (
     <Fragment>
       <div className="wrapper bg-dark-white">
@@ -63,12 +62,29 @@ const Header = () => {
               </div>
               <div className="th-right">
                 <ul>
-                  <li>{isAuthenticated === true ? <NavLink className="link" to=''> Profile</NavLink> : <NavLink className="link" to='/registration'> Register</NavLink> }
+                  <li>
+                    {isAuthenticated === true ?
+                      <Dropdown>
+                        <Dropdown.Toggle  className="link" style={{color: "#ffba5a"}} as={NavLink} id="my-dropdown"> Profile</Dropdown.Toggle>
+                        <Dropdown.Menu>
+                          <ul>
+                            <li> <Dropdown.Item as={NavLink} to="/my-account">My Account</Dropdown.Item>
+                            </li>
+                            <li>
+                              <Dropdown.Item as={NavLink} to="/my-address">My Address</Dropdown.Item>
+                            </li>
+                            <li>
+                              <Dropdown.Item as={NavLink} to="/my-oreders">My Orders</Dropdown.Item>
+                            </li>
+                          </ul>
+                        </Dropdown.Menu>
+                      </Dropdown>
+                      :
+                      <NavLink className="link" to='/registration'> Register</NavLink>}
                   </li>
                   <li><NavLink className="link">/</NavLink></li>
                   <li>{isAuthenticated === true ? <NavLink className="link" to='' onClick={handelLogOut}> LogOut
-                  
-                  </NavLink> : <NavLink className="link" to='/login'> LogIn</NavLink> }
+                  </NavLink> : <NavLink className="link" to='/login'> LogIn</NavLink>}
                   </li>
                 </ul>
               </div>
@@ -77,6 +93,7 @@ const Header = () => {
         </div>
       </div>
       <NavBar />
+
     </Fragment>
   )
 }

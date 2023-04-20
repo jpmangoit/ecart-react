@@ -4,16 +4,24 @@ import {
     REGISTRATION_REQUEST,
     REGISTRATION_SUCCESS,
     REGISTRATION_FAIL,
+
     LOGIN_REQUEST,
     LOGIN_SUCCESS,
     LOGIN_FAIL,
+
+    LOAD_USER_REQUEST,
+    LOAD_USER_SUCCESS,
+    LOAD_USER_FAIL,
+
     FORGET_PASSWORD_REQUEST,
     FORGET_PASSWORD_SUCCESS,
     FORGET_PASSWORD_FAIL,
-    UPDATE_PASSWORD_REQUEST,
-    UPDATE_PASSWORD_SUCCESS,
-    UPDATE_PASSWORD_RESET,
-    UPDATE_PASSWORD_FAIL,
+
+    RESET_PASSWORD_REQUEST,
+    RESET_PASSWORD_SUCCESS,
+    RESET_PASSWORD_FAIL,
+
+    CLEAR_ERROR
   
 } from "../constant/AuthConstant";
 
@@ -91,7 +99,7 @@ export const forgetPasswordUser = (email) => async (dispatch) => {
 
         const config = { headers: {"Content-Type": "application/json"}}
 
-        const { data } = await axios.post('/api/user-auth/forgot-password', email, config)
+        const { data } = await axios.post('/api/user-auth/forgot-password', {email}, config)
 
         console.log(data, "forget")
 
@@ -111,43 +119,68 @@ export const forgetPasswordUser = (email) => async (dispatch) => {
 
 // Update Password Action 
 
-export const updatePasswordUser = (password) => async (dispatch) => {
+export const resetPasswordUser = (token,password) => async (dispatch) => {
 
     try {
 
         dispatch({
-            type: UPDATE_PASSWORD_REQUEST
+            type: RESET_PASSWORD_REQUEST
         })
 
         const config = { headers: {"Content-Type": "application/json"}}
 
-        const { data } = await axios.post('/api/user-auth/reset-password', password, config)
-
-        console.log(data, "forget")
+        const { data } = await axios.post('/api/user-auth/reset-password', {password,token}, config)
 
         dispatch({
-            type: UPDATE_PASSWORD_SUCCESS,
+            type: RESET_PASSWORD_SUCCESS,
             payload: data
         })
 
     } catch (error) {
 
         dispatch({
-            type: UPDATE_PASSWORD_FAIL,
+            type: RESET_PASSWORD_FAIL,
             payload: error.response.data.message,
         })
     }
 }
 
+// Load User Action 
 
+export const loadUserDetails = (token) => async (dispatch) => {
+
+    try {
+        
+        dispatch({
+            type: LOAD_USER_REQUEST
+        })
+
+        const {data} = await axios.get('/api/user-auth/user',{
+            headers: {
+                Authorization: `Bearer ${token}`,
+              },
+        })
+
+        dispatch({
+            type: LOAD_USER_SUCCESS,
+            payload: data
+        })
+    } catch (error) {
+        
+        dispatch({
+            type: LOAD_USER_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
 
 
 // Clear All Error
 
 
-// export const clearErrors = (dispatch) => {
+export const clearErrors = (dispatch) => {
 
-//     dispatch({
-//         type: CLEAR_ERROR
-//     })
-// }
+    dispatch({
+        type: CLEAR_ERROR
+    })
+}

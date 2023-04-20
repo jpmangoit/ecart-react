@@ -6,9 +6,14 @@ import {
      loginUserReducer, 
     registrationUserRducer, 
     forgetPasswordReducer, 
-    updatePasswordReducer ,
+    resetPasswordReducer,
+    loadUserReducer
+    
 } from "./reducer/AuthReducer"
-
+import {contactUsReducer} from "./reducer/ContactUsReducer"
+import { updateProfileReducer} from "./reducer/ProfileReducer"
+import {productDetailReducer} from "./reducer/ProductsRecucer"
+ 
 const reducer = combineReducers({
     banners: bannerReducer,
     featured: featuredProducts,
@@ -16,9 +21,12 @@ const reducer = combineReducers({
     trending: trendingProducts,
     userLogin: loginUserReducer,
     userRegistration: registrationUserRducer,
+    loadUser: loadUserReducer,
     forgetPassword: forgetPasswordReducer,
-    updatePassword: updatePasswordReducer
-
+    resetPassword: resetPasswordReducer,
+    contactUs: contactUsReducer,
+    profileUpdate: updateProfileReducer,
+    product: productDetailReducer
 })
 
 const initialState = {};

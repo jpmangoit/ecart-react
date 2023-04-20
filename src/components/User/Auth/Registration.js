@@ -306,10 +306,10 @@ const Registration = () => {
 
               <h1 className='main-heading'>User Registration successful!</h1>
               <div>
-              <p>Verification link has been sent to your email</p>
-              <p>You can proceed for login after verification <Link className="link" to='/login'>Login</Link> </p>
+                <p>Verification link has been sent to your email</p>
+                <p>You can proceed for login after verification <Link className="link" to='/login'>Login</Link> </p>
               </div>
-              
+
 
             </div>
 

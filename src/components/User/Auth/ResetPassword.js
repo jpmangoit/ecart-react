@@ -2,10 +2,9 @@
 import React, { Fragment, useState, useEffect } from 'react'
 import Loader from "../layout/Loader"
 import { useDispatch, useSelector } from 'react-redux';
-import { updatePasswordUser } from "../../../action/AuthAction"
+import { resetPasswordUser } from "../../../action/AuthAction"
 import { useAlert } from 'react-alert';
-import { UPDATE_PASSWORD_RESET } from '../../../constant/AuthConstant';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import "./Registration.css"
 
 const ResetPassword = () => {
@@ -14,7 +13,13 @@ const ResetPassword = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const { error, loading, isUpdated } = useSelector((state) => state.updatePassword)
+    const location = useLocation();
+    const resetToken = new URLSearchParams(location.search).get('token');
+
+    console.log(`Token: ${resetToken}`);
+
+
+    const { error, loading, success } = useSelector((state) => state.resetPassword)
 
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -56,7 +61,7 @@ const ResetPassword = () => {
     const resetPasswordSubmit = (e) => {
         e.preventDefault();
         if (validateForm()) {
-            dispatch(updatePasswordUser(newPassword))
+            dispatch(resetPasswordUser(resetToken, newPassword))
         }
     }
 
@@ -65,21 +70,16 @@ const ResetPassword = () => {
             alert.error(error)
         }
 
-        if(isUpdated){
+        if(success){
             alert.success("Password reset successfully")
 
-            navigate('/home')
-
-            dispatch({
-                type: UPDATE_PASSWORD_RESET
-            })
+            navigate('/login')
         }
 
-    }, [dispatch, error, alert, isUpdated])
+    }, [dispatch, error, alert, success])
 
     return (
         <Fragment>
-        {loading ? <Loader /> : <Fragment>
   
           <div className='register'>
             <h3 className='main-heading'>RESET PASSWORD</h3>
@@ -120,8 +120,7 @@ const ResetPassword = () => {
   
           </div>
   
-        </Fragment>
-        }
+      
       </Fragment>
     )
 }

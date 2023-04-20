@@ -32,33 +32,35 @@ const FeaturedProduct = ({ featureProduct }) => {
 
           <div className="row cus-row-30">
             <div className="product-slider arrow-left-right">
+            {featureProduct && featureProduct.length > 0 && (
               <OwlCarousel margin={10} {...options} >
-                {
-                  featureProduct && featureProduct.map((featured) => (
-                    <Fragment key={featured.id}>
+              {
+                featureProduct.map((featured) => (
+                  <Fragment key={featured.id}>
 
-                      <div className="single-product">
-                        <div className="product-img">
-                          <span className="pro-label sale-label">sale</span>
-                          <NavLink to={`/products-details/${featured.id}`}>
-                            <img src={featured.path} alt={featured.name} />
-                          </NavLink>
-                        </div>
+                    <div className="single-product">
+                      <div className="product-img">
+                        <span className="pro-label sale-label">sale</span>
+                        <NavLink to={`/products-details/${featured.id}`}>
+                          <img src={featured.path} alt={featured.name} />
+                        </NavLink>
+                      </div>
 
-                        <div className="product-info clearfix text-center">
-                          <div className="fix">
-                            <h4 className="post-title">{featured.name}</h4>
-                            <div className="product-price">
-                              <span className="price-1">${featured.price}</span>
-                            </div>
+                      <div className="product-info clearfix text-center">
+                        <div className="fix">
+                          <h4 className="post-title">{featured.name}</h4>
+                          <div className="product-price">
+                            <span className="price-1">${featured.price}</span>
                           </div>
                         </div>
                       </div>
-                    </Fragment>
+                    </div>
+                  </Fragment>
 
-                  ))
-                }
-              </OwlCarousel>
+                ))
+              }
+            </OwlCarousel>
+            )}
 
             </div>
           </div>

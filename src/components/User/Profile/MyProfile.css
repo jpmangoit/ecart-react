@@ -1,4 +1,58 @@
+.image-account {
+    height: 300px;
+}
 
+.header-image {
+    position: relative;
+}
+.account {
+    text-align: center;
+   
+}
+
+table,td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    height: 30px;
+    width: 40px;
+  }
+  tr {
+    border-bottom: 1px solid #ddd;
+  }
+  td{
+    padding: 5px;
+  }
+  tbody{
+    box-sizing: border-box;
+  }
+  .table-wrapper{
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 25px;
+
+  }
+
+  .center {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .info {
+    text-align: center;
+    margin-top: 25px;
+  }
+
+  .btnEdit {
+    text-align: center;
+    margin-top: 25px;
+    margin-bottom: 25px;
+  }
+
+  .btnEdit > button {
+    border: 1px solid;
+  }
+
+  
 .register {
    padding: 20px 80px;
 }
@@ -54,10 +108,10 @@ button[type="submit"]:hover {
   z-index: 2;
   height: 5vh;
   border: none;
-  margin: 0%;
+  margin: 1%;
   font: 400 0.8vmax cursive;
   transition: all 0.5s;
-  padding: 0 1vmax;
+  padding: 20px;
   color: rgba(0, 0, 0, 0.623);
   background-color: rgb(255, 255, 255);
 }
