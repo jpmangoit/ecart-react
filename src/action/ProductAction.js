@@ -145,7 +145,7 @@ export const getSize = () => async (dispatch) => {
 export const getAllProduct = (config) => async (dispatch) => {
 
     try {
-        console.log(config,"fig");
+        // console.log(config,"fig");
         dispatch({
             type: ALL_PRODUCTS_REQUEST
         })

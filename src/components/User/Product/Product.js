@@ -14,16 +14,6 @@ const Product = () => {
   const alert = useAlert();
 
   const { allproduct, pageCount, error } = useSelector((state) => state.allProduct);
-  let config = {
-    page: 1,
-    pageSize: 10,
-    price: null,
-    search: "",
-    catId: null,
-    color: null,
-    size: null,
-    filter: null
-  }
 
   // console.log(pageCount, "jjjj")
 
@@ -33,85 +23,99 @@ const Product = () => {
     item.ProductFlat.name?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-   console.log(filteredData, "all");
+  // console.log(filteredData, "all");
 
-  const [currentPage, setCurrentPage] = useState(config.page);
   const [selectedColors, setSelectedColors] = useState([]);
   const [selectSize, setSize] = useState([])
+
   const [selectedIds, setSelectedIds] = useState([]);
 
-  let setFilter = true
+  const [config, setConfig] = useState({
+    page: 1,
+    pageSize: 10,
+    price: null,
+    search: "",
+    catId: null,
+    color: null,
+    size: null,
+    filter: null
+  });
+  const [currentPage, setCurrentPage] = useState(config.page);
 
   const handleSearch = (e) => {
-    config.filter = setFilter
 
     setSearchQuery(e.target.value)
-    config.search = e.target.value;
-
-    dispatch(getAllProduct(config));
+    const updatedConfig = { ...config, search: e.target.value, filter: true };
+    setConfig(updatedConfig)
+    dispatch(getAllProduct(updatedConfig));
   }
 
   const handlePrice = (event, priceValue) => {
-    config.filter = setFilter
 
     let priceStr = `${priceValue[0]},${priceValue[1]}`;
     console.log(priceStr, "prii")
-    config.price = priceStr;
-
-    dispatch(getAllProduct(config));
+    const updatedConfig = { ...config, price: priceStr, filter: true };
+    setConfig(updatedConfig);
+    dispatch(getAllProduct(updatedConfig));
   }
 
   const handleColor = (event) => {
-    config.filter = setFilter
 
     const value = event.target.value;
-    if (event.target.checked) {
-      setSelectedColors([...selectedColors, value]);
-    } else {
-      setSelectedColors(selectedColors.filter((color) => color !== value));
-    }
-    let colorStr = `${encodeURIComponent(value)}`
-    // console.log(colorStr,"hhjhj");
-    config.color = colorStr
+    let colorStr = ""
+    const updatedColors = event.target.checked
+      ? [...selectedColors, value]
+      : selectedColors.filter((color) => color !== value);
 
-    dispatch(getAllProduct(config))
+    setSelectedColors(updatedColors);
+    updatedColors.map(clr => {
+      colorStr = colorStr + encodeURIComponent(clr) + ','
+    })
+    const updatedConfig = { ...config, color: colorStr, filter: true };
+    setConfig(updatedConfig);
+    dispatch(getAllProduct(updatedConfig))
   }
 
   const handleSize = (event) => {
-    config.filter = setFilter
 
     const value = event.target.value
-    if (event.target.checked) {
-      setSize([...selectSize, value]);
-    } else {
-      setSize(selectSize.filter((size) => size !== value));
-    }
-    let sizeStr = `${value},`
-    config.size = sizeStr
+    const sizeStr = ""
+    const updatedSize = event.target.checked
+      ? [...selectSize, value]
+      : selectSize.filter((size) => size !== value)
 
-    dispatch(getAllProduct(config))
+    setSize(updatedSize)
+    updatedSize.map(siz => {
+      sizeStr = sizeStr + siz + ','
+    })
+    const updatedConfig = { ...config, size: sizeStr, filter: true };
+    setConfig(updatedConfig);
+    dispatch(getAllProduct(updatedConfig))
   }
 
   const handleCategories = (id, isChecked) => {
-    config.filter = setFilter
 
-    if (isChecked) {
-      setSelectedIds([...selectedIds, id]);
-      // console.log(selectedIds,"oooo");
-    } else {
-      setSelectedIds(selectedIds.filter((selectedId) => selectedId !== id));
-      // console.log(selectedIds,"pp");
-    }
-
-    let categoryStr = `${id},`
-    console.log(categoryStr, "gg");
-    config.catId = categoryStr
-
-    dispatch(getAllProduct(config))
+    let categoryStr = ""
+    const updatedCategory = isChecked
+      ? [...selectedIds, id]
+      : selectedIds.filter((category) => category !== id)
+    console.log(updatedCategory, "uuu");
+    setSelectedIds(updatedCategory)
+    updatedCategory.map(categry => {
+      categoryStr = categoryStr + categry + ','
+    })
+    const updatedConfig = { ...config, catId: categoryStr, filter: true };
+    console.log(updatedConfig, "ccc");
+    setConfig(updatedConfig);
+    dispatch(getAllProduct(updatedConfig))
   };
 
   const setCurrentPageNo = (pageNumber) => {
+    console.log(pageNumber);
+    const updatedConfig = { ...config, page: pageNumber }
+    setConfig(updatedConfig);
     setCurrentPage(pageNumber);
+    dispatch(getAllProduct(updatedConfig))
   };
 
   useEffect(() => {
@@ -186,7 +190,7 @@ const Product = () => {
                       </li>
                     </ul>
                     <div className="showing text-right hidden-xs">
-                      <p className="mb-0">Showing {config.page}-{config.pageSize-1} of {pageCount} Results</p>
+                      <p className="mb-0">Showing {config.page}-{config.pageSize - 1} of {pageCount} Results</p>
                     </div>
                   </div>
 
@@ -298,43 +302,8 @@ const Product = () => {
 
                   {/* Pagination */}
 
-                  {/* <div className="shop-pagination  text-center">
-                    <div className="pagination">
-                      <ul>
-                        <li>
-                          <a href="#">
-                            <i className="zmdi zmdi-long-arrow-left"></i>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#">01</a>
-                        </li>
-                        <li className="active">
-                          <a href="#">02</a>
-                        </li>
-                        <li>
-                          <a href="#">03</a>
-                        </li>
-                        <li>
-                          <a href="#">04</a>
-                        </li>
-                        <li>
-                          <a href="#">05</a>
-                        </li>
-                        <li>
-                          <a href="#">
-                            <i className="zmdi zmdi-long-arrow-right"></i>
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div> */}
-
-
-
                   <div className="shop-pagination  text-center">
                     <div className="pagination">
-
                       <Pagination
                         activePage={currentPage}
                         itemsCountPerPage={config.pageSize}
@@ -348,13 +317,8 @@ const Product = () => {
                         linkClass="page-link"
                         activeLinkClass="pageLinkActive"
                       />
-
                     </div>
                   </div>
-
-
-
-
 
                 </div>
               </div>

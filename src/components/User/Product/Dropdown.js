@@ -1,4 +1,3 @@
-
 import React, { Fragment, useCallback, useEffect, useState } from "react";
 
 import "./Categories.css";
@@ -15,15 +14,19 @@ import { PropertyPane } from './propertpan';
 import { TreeView, TreeItem } from '@material-ui/lab';
 import { ExpandMore, ChevronRight } from '@material-ui/icons';
 import TreeNode from "./TreeNode";
+import { ALL_CATEGORY_SUCCESS } from "../../../constant/ProductsConstant";
 
 const Dropdow = ({handleCategories}) => {
 
   const dispatch = useDispatch();
+  const [parentCategories,setParent]=useState([])
   const alert = useAlert();
 
   const { category, error } = useSelector((state) => state.filters);
+  const { allCategories } = useSelector((state) => state.allCategory);
 
   function getCategoriesByParentId(allCategories, parentId) {
+    // console.log("parent");
     const filteredCategories = allCategories?.filter(
       (category) => category.parentId === parentId
     );
@@ -32,12 +35,12 @@ const Dropdow = ({handleCategories}) => {
       const children = getCategoriesByParentId(allCategories, category.id);
       if (children.length) {
         category.children = children;
+        category.isOpen = false
       }
 
       return category;
     });
   }
-  const parentCategories = getCategoriesByParentId(category, null);
 
   //  console.log(parentCategories,"jj");
 
@@ -47,6 +50,13 @@ const Dropdow = ({handleCategories}) => {
     }
     dispatch(getCategories());
   }, []);
+
+  useEffect(() => {
+  dispatch({
+    type:ALL_CATEGORY_SUCCESS,
+    data:getCategoriesByParentId(category, null)
+  }) ;
+  }, [category]);
 
   // const [selectedIds, setSelectedIds] = useState([]);
 
@@ -62,6 +72,30 @@ const Dropdow = ({handleCategories}) => {
   //   }
 
   // };
+  const handleOpenC =(nodeValue,parentId)=>{
+    if(parentId){
+     console.log(nodeValue,parentId,allCategories);
+     let index = allCategories.findIndex(kk => kk.id === parentId);
+     let chidlIndex = allCategories[index].children.findIndex(ll=>ll.id == nodeValue.id);
+     let pC = JSON.parse(JSON.stringify(allCategories));
+      pC[index].children[chidlIndex].isOpen = !nodeValue.isOpen;
+      dispatch({
+      type:ALL_CATEGORY_SUCCESS,
+      data:pC
+    })
+    }
+    else{  
+      let index = allCategories.findIndex(kk => kk.id === nodeValue.id);
+      let pC = JSON.parse(JSON.stringify(allCategories));
+      pC[index].isOpen = !nodeValue.isOpen;
+      dispatch({
+      type:ALL_CATEGORY_SUCCESS,
+      data:pC
+    })
+  }
+    
+ 
+  }
 
   return (
     <div>
@@ -74,14 +108,15 @@ const Dropdow = ({handleCategories}) => {
         <div className="dropdown">
           <ul className="menu">
             <div>
-              {parentCategories && parentCategories?.map((rootNode) => (
-                <TreeNode
-                  key={rootNode.id}
-                  node={rootNode}
-                  onCheck={ handleCategories }
-                  value={rootNode.id}
-                />
-              ))}
+              {allCategories && allCategories?.map((rootNode) => (
+      <TreeNode
+        key={rootNode.id}
+        node={rootNode}
+        onCheck={ handleCategories }
+        value={rootNode.id}
+        onOpenChange = {handleOpenC}
+      />
+    ))}
             </div>
           </ul>
         </div>
@@ -91,7 +126,3 @@ const Dropdow = ({handleCategories}) => {
 }
 
 export default Dropdow
-
-
-
-
