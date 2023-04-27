@@ -8,7 +8,7 @@ const NavBar = () => {
 
   const { isAuthenticated, userLogin } = useSelector((state) => state.userLogin);
   const {cartItems} = useSelector((state) => state.cart)
-  console.log(cartItems[0].length,"ff");
+  // console.log(cartItems[0].length,"ff");
 
   return (
     <Fragment>
@@ -41,7 +41,7 @@ const NavBar = () => {
                     <li>
                       <Link className="cart-icon" to='/cart' >
                         <i className="zmdi zmdi-shopping-cart"></i>
-                        <span>{cartItems[0].length}</span>
+                        {/* <span>{cartItems[0].length === null ? "" : cartItems[0].length  }</span> */}
                       </Link>
                       <div className="mini-cart-brief text-left">
                         <div className="cart-items">

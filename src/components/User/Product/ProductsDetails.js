@@ -13,6 +13,7 @@ import { useLocation } from 'react-router-dom';
 import { FaMinus, FaPlus } from "react-icons/fa";
 import { addItemsToCart } from "../../../action/CartAction"
 import { getCartItems } from "../../../action/CartAction"
+import { NavLink } from 'react-router-dom';
 
 const ProductDetails = () => {
 
@@ -26,7 +27,7 @@ const ProductDetails = () => {
 
   const { product, loading, error } = useSelector((state) => state.product)
 
-  console.log(product, "ppp")
+  // console.log(product, "ppp")
 
   const [quantity, setQuantity] = useState(1)
 
@@ -54,7 +55,7 @@ const ProductDetails = () => {
   const dataToken = JSON.parse(token)
 
   const addToCartHandler = () => {
-    dispatch(addItemsToCart(dataToken.token, dataToken.user.id, product.ProductFlat?.productId, quantity,));
+    dispatch(addItemsToCart(dataToken.token, dataToken.user.id, id , quantity,));
     dispatch(getCartItems(dataToken.token, dataToken.user.id))
     alert.success("Item Added To Cart");
   };
@@ -92,6 +93,30 @@ const ProductDetails = () => {
   return (
     <Fragment>
       {loading ? <Lodder /> : (<Fragment>
+        <div className="wrapper bg-dark-white">
+        <div className="heading-banner-area overlay-bg">
+          <div className="container">
+            <div className="row">
+              <div className="col-md-12">
+                <div className="heading-banner">
+                  <div className="heading-banner-title">
+                    <h2>Product Details</h2>
+                  </div>
+                  <div className="breadcumbs pb-15">
+                    <ul>
+                      <li>
+                        <NavLink to="/">Home</NavLink>
+                      </li>
+                      <li><NavLink to="/products">Product Page</NavLink></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+
         <div className='ProductDetails'>
           <div>
             {product.ProductImages && product.ProductImages.map((item, i) => (
