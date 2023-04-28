@@ -26,7 +26,7 @@ export const addItemsToCart = (token, customerId, productId, quantity) => async 
             type: ADD_TO_CART,
             payload: data
         })
-
+        
     } catch (error) {
         console.log(error);
     }
@@ -60,7 +60,7 @@ export const getCartItems = (token, customerId) => async (dispatch, getState) =>
 
 // Remove Quantity 
 
-export const removeQuantity = (token, id) => async (dispatch, getState) => {
+export const removeQuantity = (token, id) => async (dispatch) => {
 
     try {
         const { data } = await axios.delete(`/api/user-cart/remove-quantity/${id}`, {
@@ -75,6 +75,7 @@ export const removeQuantity = (token, id) => async (dispatch, getState) => {
         });
     } catch (error) {
         console.error(error);
+        // Handle error
     }
 
     // localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
@@ -82,7 +83,7 @@ export const removeQuantity = (token, id) => async (dispatch, getState) => {
 
 // Remove Product from cart
 
-export const removeItemsFromCart = (token, id) => async (dispatch, getState) => {
+export const removeItemsFromCart = (token, id,userId) => async (dispatch) => {
 
     try {
 
@@ -91,22 +92,21 @@ export const removeItemsFromCart = (token, id) => async (dispatch, getState) => 
                 Authorization: `Bearer ${token}`,
             }
         })
-
-        dispatch({
-            type: REMOVE_SINGLE_ITEM,
-            payload: data,
-        });
-
+    
+        dispatch(getCartItems(token, userId))
+        
     } catch (error) {
-        console.log(error);
+        console.log(error); 
     }
+
+    
 
     // localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
 };
 
 // Remove Cart 
 
-export const removeCart = (token, customerId) => async (dispatch, getState) => {
+export const removeCart = (token, customerId) => async (dispatch) => {
 
     try {
 
@@ -115,15 +115,14 @@ export const removeCart = (token, customerId) => async (dispatch, getState) => {
                 Authorization: `Bearer ${token}`,
             }
         })
-
-        dispatch({
-            type: REMOVE_CART,
-            payload: data,
-        });
-
+    
+        dispatch(getCartItems(token, customerId))
+        
     } catch (error) {
-        console.log(error);
+        console.log(error); 
     }
+
+    
 
     // localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
 };

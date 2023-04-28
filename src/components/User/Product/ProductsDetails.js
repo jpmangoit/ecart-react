@@ -55,16 +55,18 @@ const ProductDetails = () => {
   const dataToken = JSON.parse(token)
 
   const addToCartHandler = () => {
-    dispatch(addItemsToCart(dataToken.token, dataToken.user.id, id , quantity,));
+    dispatch(addItemsToCart(dataToken.token, dataToken.user.id, id, quantity,));
     dispatch(getCartItems(dataToken.token, dataToken.user.id))
-    alert.success("Item Added To Cart");
+    alert.success("Item Added To Cart", {
+      timeout: 1000
+    });
   };
 
   const options = {
     edit: false,
     color: "rgba(20,20,20,0.1)",
     activeColor: "tomato",
-    value: product.rating,
+    // value: product.rating,
     size: window.innerWidth < 600 ? 20 : 25,
     isHalf: true,
     readOnly: true,
@@ -94,32 +96,31 @@ const ProductDetails = () => {
     <Fragment>
       {loading ? <Lodder /> : (<Fragment>
         <div className="wrapper bg-dark-white">
-        <div className="heading-banner-area overlay-bg">
-          <div className="container">
-            <div className="row">
-              <div className="col-md-12">
-                <div className="heading-banner">
-                  <div className="heading-banner-title">
-                    <h2>Product Details</h2>
-                  </div>
-                  <div className="breadcumbs pb-15">
-                    <ul>
-                      <li>
-                        <NavLink to="/">Home</NavLink>
-                      </li>
-                      <li><NavLink to="/products">Product Page</NavLink></li>
-                    </ul>
+          <div className="heading-banner-area overlay-bg">
+            <div className="container">
+              <div className="row">
+                <div className="col-md-12">
+                  <div className="heading-banner">
+                    <div className="heading-banner-title">
+                      <h2>Products</h2>
+                    </div>
+                    <div className="breadcumbs pb-15">
+                      <ul>
+                        <li>
+                          <NavLink to="/">Home</NavLink>
+                        </li>
+                        <li> <NavLink to="/products">Product Page</NavLink></li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        </div>
-
         <div className='ProductDetails'>
           <div>
-            {product.ProductImages && product.ProductImages.map((item, i) => (
+            {product?.ProductImages && product?.ProductImages?.map((item, i) => (
 
               <img className='CarouselImage'
                 key={item.id}
@@ -130,7 +131,7 @@ const ProductDetails = () => {
           </div>
           <div>
             <div className='detailsBlock-1'>
-              <h2>{product.ProductFlat?.name}</h2>
+              <h2>{product?.ProductFlat?.name}</h2>
             </div>
             <div className='detailsBlock-2'>
               <ReactStars {...options} />
@@ -139,10 +140,10 @@ const ProductDetails = () => {
             <div className='detailsBlock-3'>
 
               {
-                product.ProductInventory?.qty < 1
+                product?.ProductInventory?.qty < 1
                   ? ""
                   : <>
-                    <h1>{`₹ ${product.ProductFlat?.price}`}</h1>
+                    <h1>{`₹ ${product?.ProductFlat?.price}`}</h1>
                     <div className='detailsBlock-3-1'>
                       <div className='detailsBlock-3-1-1'>
                         <button onClick={handleDecrement} ><FaMinus /></button>
@@ -168,15 +169,15 @@ const ProductDetails = () => {
 
               <p>
                 Status:
-                <b className={product.ProductInventory?.qty < 1 ? "redColor" : "greenColor"}>
-                  {product.ProductInventory?.qty < 1 ? "OutOfStock" : "InStock"}
+                <b className={product?.ProductInventory?.qty < 1 ? "redColor" : "greenColor"}>
+                  {product?.ProductInventory?.qty < 1 ? "OutOfStock" : "InStock"}
                 </b>
               </p>
 
             </div>
 
             <div className='detailsBlock-4'>
-              Description : <span dangerouslySetInnerHTML={{ __html: product.ProductFlat?.description }}></span>
+              Description : <span dangerouslySetInnerHTML={{ __html: product?.ProductFlat?.description }}></span>
               {/* {product.ProductFlat?.description} */}
             </div>
 
