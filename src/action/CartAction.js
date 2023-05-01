@@ -6,7 +6,10 @@ import {
     GET_TO_CART_ITEMS,
     SAVE_SHIPPING_INFO,
     REMOVE_QUANTITY,
-    REMOVE_SINGLE_ITEM
+    REMOVE_SINGLE_ITEM,
+    PROCESS_CHECKOUT_REQUEST,
+    PROCESS_CHECKOUT_SUCCESS,
+    PROCESS_CHECKOUT_FAIL
 } from "../constant/CartConstant"
 
 // Add to Crat
@@ -22,11 +25,12 @@ export const addItemsToCart = (token, customerId, productId, quantity) => async 
             },
         })
 
-        dispatch({
-            type: ADD_TO_CART,
-            payload: data
-        })
-        
+        dispatch(getCartItems(token, customerId))
+        // dispatch({
+        //     type: ADD_TO_CART,
+        //     payload: data
+        // })
+
     } catch (error) {
         console.log(error);
     }
@@ -83,7 +87,7 @@ export const removeQuantity = (token, id) => async (dispatch) => {
 
 // Remove Product from cart
 
-export const removeItemsFromCart = (token, id,userId) => async (dispatch) => {
+export const removeItemsFromCart = (token, id, userId) => async (dispatch) => {
 
     try {
 
@@ -92,14 +96,14 @@ export const removeItemsFromCart = (token, id,userId) => async (dispatch) => {
                 Authorization: `Bearer ${token}`,
             }
         })
-    
+
         dispatch(getCartItems(token, userId))
-        
+
     } catch (error) {
-        console.log(error); 
+        console.log(error);
     }
 
-    
+
 
     // localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
 };
@@ -115,25 +119,72 @@ export const removeCart = (token, customerId) => async (dispatch) => {
                 Authorization: `Bearer ${token}`,
             }
         })
-    
+
         dispatch(getCartItems(token, customerId))
-        
+
     } catch (error) {
-        console.log(error); 
+        console.log(error);
     }
 
-    
+
 
     // localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
 };
 
 // SAVE SHIPPING INFO
 
-export const saveShippingInfo = (data) => async (dispatch) => {
-    dispatch({
-        type: SAVE_SHIPPING_INFO,
-        payload: data,
-    });
+export const saveShippingInfo = (ship, token) => async (dispatch) => {
+    try {
 
-    localStorage.setItem("shippingInfo", JSON.stringify(data));
+
+
+        const { data } = await axios.post('/api/user-address/create-address', ship, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+
+        console.log(data, "dhhhh")
+
+        dispatch({
+            type: SAVE_SHIPPING_INFO,
+            payload: data
+        })
+
+
+    } catch (error) {
+        console.log(error)
+    }
 };
+
+// Process CheckOut 
+
+export const processCheckOut = (token, paymentDetails) => async (dispatch) => {
+
+    try {
+
+        dispatch({
+            type: PROCESS_CHECKOUT_REQUEST
+        })
+
+        const { data } = await axios.post('/api/user-checkout/checkout', paymentDetails, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+
+        console.log(data,"check");
+        
+        dispatch({
+            type: PROCESS_CHECKOUT_SUCCESS,
+            payload: data
+        })
+
+    } catch (error) {
+        dispatch({
+            type: PROCESS_CHECKOUT_FAIL,
+            payload: error.response.data.message,
+        })
+        console.log(error);
+    }
+}
