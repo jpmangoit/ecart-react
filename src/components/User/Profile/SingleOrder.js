@@ -23,7 +23,7 @@ const SingleOrder = () => {
       alert.error(error)
       dispatch(clearErrors())
     }
-    dispatch(singleOrder(dataToken.token, id))
+    dispatch(singleOrder(dataToken?.token, id))
   }, [dispatch, id, error, alert])
 
   return (

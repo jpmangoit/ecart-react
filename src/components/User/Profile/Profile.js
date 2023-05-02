@@ -111,7 +111,7 @@ const Profile = () => {
     validateUser()
     const token = localStorage.getItem("userDetails");
     const dataToken = JSON.parse(token)
-    dispatch(loadUserDetails(dataToken.token))
+    dispatch(loadUserDetails(dataToken?.token))
 
   }, [])
   useEffect(() => {

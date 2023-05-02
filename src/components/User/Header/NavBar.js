@@ -76,7 +76,7 @@ const NavBar = () => {
                           <span>{cartData?.length === null ? "" : cartData?.length}</span>
                         </Link>
                       } */}
-                      <Link className="cart-icon" to='/cart' >
+                      <Link className="cart-icon" to='/carts' >
                         <i className="zmdi zmdi-shopping-cart"></i>
                         <span>{cartData?.length === null ? "" : cartData?.length}</span>
                       </Link>
@@ -110,17 +110,17 @@ const NavBar = () => {
                                         <i className="zmdi zmdi-close" onClick={() => { handleRemoveCartItem(items.id) }}></i>
                                       </span>
                                     </div>
-                                   
+
                                   </div>
                                 ))
                               }
-                               {showConfirmDialog && (
-                                      <ConfirmationDialog
-                                        message="Are you sure you want to remove this item?"
-                                        onConfirm={handleConfirmRemove}
-                                        onCancel={handleCancelRemove}
-                                      />
-                                    )}
+                              {showConfirmDialog && (
+                                <ConfirmationDialog
+                                  message="Are you sure you want to remove this item?"
+                                  onConfirm={handleConfirmRemove}
+                                  onCancel={handleCancelRemove}
+                                />
+                              )}
 
                             </div>
                             <div className="cart-totals">

@@ -1,27 +1,46 @@
 
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Route} from "react-router-dom"
-import { Link } from 'react-router-dom';
+import { Route, Routes } from "react-router-dom"
+import { Link, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
-const ProtectedRoute = ({component: Component, ...rest}) => {
+// const ProtectedRoute = ({component: Component, ...rest}) => {
 
- const { userLogin, isAuthenticated, loading } = useSelector((state) => state.userLogin)
+//  const { userLogin, isAuthenticated, loading } = useSelector((state) => state.userLogin)
+//   return (
+//     <Fragment>
+//       {loading === false &&(
+//         <Route {...rest} 
+//         render= {props =>{
+//           if(isAuthenticated === false){
+//             return  <Navigate to="/login"></Navigate>
+//           }
+//           return <Component {...props} />
+//         } }
+//         />
+
+//        )} 
+//     </Fragment>
+//   )
+// }
+
+const ProtectedRoute = (props) => {
+  const { Component } = props
+  const navigate = useNavigate()
+  const { isAuthenticated } = useSelector((state) => state.userLogin)
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login')
+    }
+  })
+
   return (
-    <Fragment>
-      {loading === false &&(
-        <Route {...rest} 
-        render= {props =>{
-          if(isAuthenticated === false){
-            return   <Link to="/login"></Link>
-          }
-          return <Component {...props} />
-        } }
-        />
-
-       )} 
-    </Fragment>
+    <div>
+        <Component /> 
+    </div>
   )
-}
+};
 
 export default ProtectedRoute

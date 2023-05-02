@@ -5,22 +5,24 @@ import {loadUserDetails} from "../../../action/AuthAction"
 import { useSelector, useDispatch } from "react-redux";
 import { LOGIN_SUCCESS } from '../../../constant/AuthConstant';
 import { Link} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const MyProfile = () => {
 
-  const alert = useAlert()
+  const navigate = useNavigate();
+  const { isAuthenticated } = useSelector((state) => state.userLogin)
 
+  const alert = useAlert()
   const dispatch = useDispatch()
 
   const {user}  = useSelector((state) => state.loadUser)
 
   useEffect(() => {
     // validateUser()
-
       const token = localStorage.getItem("userDetails");
       const dataToken = JSON.parse(token)
       // console.log(dataToken.token,"tpkn");
-      dispatch(loadUserDetails(dataToken.token));
+      dispatch(loadUserDetails(dataToken?.token));
 }, [])
 
 // function validateUser(){

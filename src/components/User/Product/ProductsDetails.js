@@ -79,7 +79,7 @@ const ProductDetails = () => {
       alert.error(error)
       dispatch(clearErrors())
     }
-    dispatch(productDetails(id,dataToken.token))
+    dispatch(productDetails(id,dataToken?.token))
   }, [dispatch, id, error, alert, isAuthenticated])
 
   // function validateUser() {

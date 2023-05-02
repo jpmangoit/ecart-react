@@ -34,7 +34,7 @@ const MyOrder = () => {
     if (error) {
       dispatch(clearErrors());
     }
-    dispatch(getAllOrder(dataToken.user.id, dataToken.token, config));
+    dispatch(getAllOrder(dataToken?.user.id, dataToken?.token, config));
   }, [dispatch]);
 
   return (
