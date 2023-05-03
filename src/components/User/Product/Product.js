@@ -80,7 +80,7 @@ const Product = () => {
   const handleSize = (event) => {
 
     const value = event.target.value
-    const sizeStr = ""
+    let sizeStr = ""
     const updatedSize = event.target.checked
       ? [...selectSize, value]
       : selectSize.filter((size) => size !== value)

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../../action/AuthAction';
 import { useAlert } from 'react-alert';
 import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 
 const Login = () => {
 
@@ -15,54 +16,23 @@ const Login = () => {
 
   const { error, loading, isAuthenticated, userLogin } = useSelector((state) => state.userLogin)
 
-  //  console.log(userLogin,"loooo");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const [loginEmail, setLoginEmail] = useState('');
-  const [loginPassword, setLoginPassword] = useState('');
+  const onSubmit = (loginData) => {
 
-  const [formErrors, setFormErrors] = useState({
+    dispatch(loginUser(loginData))
 
-    loginEmail: "",
-    loginPassword: "",
-
-  });
-
-  const validateForm = () => {
-    let errors = {};
-    let isValid = true;
-
-    if (!loginEmail?.trim()) {
-      errors.loginEmail = "Email is required";
-      isValid = false;
-    } else if (!/\S+@\S+\.\S+/.test(loginEmail)) {
-      errors.loginEmail = "Invalid email address";
-      isValid = false;
-    }
-
-    if (!loginPassword?.trim()) {
-      errors.loginPassword = "Password is required";
-      isValid = false;
-    } else if (loginPassword?.trim().length < 8) {
-      errors.loginPassword = "Password must be at least 8 characters long";
-      isValid = false;
-    }
-
-    setFormErrors(errors);
-    return isValid;
-  };
-
-  const loginSubmit = (e) => {
-    e.preventDefault();
-    if (validateForm()) {
-      dispatch(loginUser(loginEmail, loginPassword))
-    }
   }
 
   useEffect(() => {
     if (error) {
       alert.error(error)
     }
-  
+
     if (isAuthenticated === true) {
       navigate('/')
     }
@@ -76,35 +46,45 @@ const Login = () => {
         <div className='register'>
           <h2 className='main-heading'>LOGIN</h2>
           <h3>If you do not have an account with us, Please <Link className="link" to='/registration'>Register</Link></h3>
-          <form onSubmit={loginSubmit}>
+          <form onSubmit={handleSubmit(onSubmit)}>
 
             <div className="form-group">
               <label htmlFor="email">Email:</label>
               <input
-                type="email"
-                placeholder='Enter Email'
-                name="email"
-                autoComplete='off'
-                value={loginEmail}
-                onChange={(e) => setLoginEmail(e.target.value)} />
+                type='text'
+                placeholder='Email'
+                {...register('email', {
+                  required: true,
+                  pattern: /^\S+@\S+$/i
+                })}
+              />
+              {errors.email && errors.email.type === "required" && (
+                <p className="errorMsg" style={{ color: 'red' }}>Email is required.</p>
+              )}
+              {errors.email && errors.email.type === "pattern" && (
+                <p className="errorMsg" style={{ color: 'red' }}>Email is not valid.</p>
+              )}
             </div>
 
-            {formErrors.loginEmail && <div style={{ color: 'red' }}>{formErrors.loginEmail}</div>}
-            <br />
-            
             <div className="form-group">
               <label htmlFor="password">Password:</label>
               <input
-                type="password"
-                placeholder='Enter Password'
-                name="password"
-                autoComplete='off'
-                value={loginPassword}
-                onChange={(e) => setLoginPassword(e.target.value)} />
+                type='password'
+                placeholder='Password'
+                {...register('password', {
+                  required: true,
+                  minLength: 6,
+                  maxLength: 12
+                })}
+              />
+              {errors.password && errors.password.type === "required" && (
+                <p className="errorMsg" style={{ color: 'red' }}>Password is required.</p>
+              )}
+              {errors.password && errors.password.type === "minLength" && (
+                <p className="errorMsg" style={{ color: 'red' }}>Password must be at least 6 characters long.</p>
+              )}
             </div>
 
-            {formErrors.loginPassword && <div style={{ color: 'red' }}>{formErrors.loginPassword}</div>}
-           <br />
             <div className="form-group">
               <h5><Link className="link" to='/forgot-password'>Forget Password</Link></h5>
             </div>
