@@ -34,7 +34,14 @@ const Header = () => {
     })
   }
 
+  // setTimeout(() => {
+  //   handelLogOut();
+  // }, 10000)
+  
+
   useEffect(() => {
+
+   
     if (isAuthenticated === false) {
       navigate('/login')
     }
