@@ -130,7 +130,7 @@ const NavBar = () => {
                             </div>
                             <div className="cart-bottom clearfix">
                               <Link
-                                to='/cart'
+                                to='/carts'
                                 className="button-one floatleft text-uppercase"
                                 data-text="View cart"
                               >View cart</Link>

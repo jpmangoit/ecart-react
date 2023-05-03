@@ -8,6 +8,7 @@ import { useAlert } from "react-alert";
 import { getBanners, clearErrors, getFeaturedProducts, getTrendingProducts, getLatestProducts} from "../../../action/HomeAction"
 import { useSelector, useDispatch } from "react-redux";
 import { LOGIN_SUCCESS } from '../../../constant/AuthConstant';
+import { getCartItems } from "../../../action/CartAction"
 
 const Home = () => {
 
@@ -33,6 +34,15 @@ const Home = () => {
         dispatch(getLatestProducts("newArrival"));
     
     }, [dispatch, error, alert])
+
+    let userDetails = localStorage.getItem('userDetails');
+    const dataToken = JSON.parse(userDetails)
+
+    useEffect(() => {
+        if (dataToken) {
+          dispatch(getCartItems(dataToken.token, dataToken.user.id))
+        }
+      }, [])
 
 //    function validateUser(){
 //         let userDetails = localStorage.getItem('userDetails');

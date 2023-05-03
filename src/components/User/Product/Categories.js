@@ -58,7 +58,7 @@ const Categories = ({ handlePrice, handleColor, handleSize}) => {
   //   setActiveMenu("main");
   // };
 
-  const [price, setPrice] = useState([0, 1000]);
+  const [price, setPrice] = useState([0, 2500]);
 
   const handleChange = (event, newValue) => {
     setPrice(newValue);
@@ -172,7 +172,7 @@ const Categories = ({ handlePrice, handleColor, handleSize}) => {
                   valueLabelDisplay="auto"
                   aria-labelledby="range-slider"
                   min={0}
-                  max={1000}
+                  max={2500}
                 />
               </div>
               <div id="slider-range"></div>

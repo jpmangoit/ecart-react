@@ -59,7 +59,7 @@ export const registrationUser = (userData) => async (dispatch) => {
 
 // Login Action
 
-export const loginUser = (email, password) => async (dispatch) => {
+export const loginUser = (userData) => async (dispatch) => {
 
     try {
 
@@ -69,7 +69,7 @@ export const loginUser = (email, password) => async (dispatch) => {
 
         const config = { headers: {"Content-Type": "application/json"}}
 
-        const { data } = await axios.post('/api/user-auth/login', {email,password}, config)
+        const { data } = await axios.post('/api/user-auth/login', userData, config)
          localStorage.setItem('userDetails',JSON.stringify(data.result))
 
 
